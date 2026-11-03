@@ -1,6 +1,6 @@
 # Triagem de chamados municipais
 
-O notebook `analise_dados.ipynb` lê `chamados_municipais.csv` e treina o mesmo classificador do projeto: `CountVectorizer` com `MultinomialNB`.
+O notebook `analise_dados.ipynb` lê `chamados_municipais.csv` e treina o classificador do projeto: `CountVectorizer` (com limpeza do texto) e `MultinomialNB` (Naive Bayes). O sorteio de treino/teste é fixo (`random_state=42`), então os resultados se repetem a cada execução.
 
 ## Banco revisado
 
@@ -40,20 +40,28 @@ Se o comando `python` não for reconhecido, tente usar `py` no lugar de `python`
 
 ## Como testar outra reclamação
 
-Na última célula, altere somente a frase dentro de `chamado_teste`. Por exemplo:
+Na última célula de código (seção 9), altere somente a frase dentro de `chamado_teste`. Por exemplo:
 
 ```python
-chamado_teste = ["O ônibus do meu bairro demora demais"]
-previsao = modelo_baseline.predict(chamado_teste)
-
-print(f"O chamado foi classificado como: {previsao[0]}")
+chamado_teste = "O ônibus do meu bairro demora demais"
+classificar_chamado(chamado_teste)
 ```
 
-Clique nessa célula e pressione **Shift + Enter**. A categoria prevista aparecerá logo abaixo. Ela é a resposta do modelo e pode estar errada.
+Clique nessa célula e pressione **Shift + Enter**. Aparece a secretaria escolhida e a probabilidade de cada uma. É a resposta do modelo, que pode estar errada. Probabilidades perto de 50% indicam que o modelo está em dúvida.
 
-Você pode trocar a frase e executar a célula novamente quantas vezes quiser. Essa célula também treina o modelo novamente, pois o treinamento e o teste estão juntos no notebook. Prefira frases que não estejam no CSV para observar como o modelo classifica reclamações novas.
+Você pode trocar a frase e executar a célula de novo quantas vezes quiser, sem retreinar. Prefira frases que não estejam no CSV, para observar como o modelo classifica reclamações novas.
 
-Se aparecer `NameError`, execute todas as células em ordem. Se aparecer `FileNotFoundError` para o CSV, confira se ele está na mesma pasta do notebook e se o nome é `chamados_municipais.csv`. Salve suas alterações com **Ctrl + S**.
+Se aparecer `NameError`, execute todas as células em ordem. Se aparecer `FileNotFoundError` para o CSV, confira se ele está na mesma pasta do notebook e se o nome é `chamados_municipais.csv`. Se aparecer `ModuleNotFoundError: matplotlib`, rode de novo `python -m pip install -r requirements.txt`. Salve suas alterações com **Ctrl + S**.
+
+## Avaliação (Check-in 3)
+
+O notebook separa 80% dos chamados para treino e 20% para teste, sem frases repetidas entre os dois, e mostra:
+
+- acurácia, precision, recall e F1-Score por categoria;
+- matriz de confusão;
+- validação cruzada em 5 rodadas;
+- lista dos chamados de teste que o modelo errou;
+- teste com 12 frases novas, escritas fora do dataset.
 
 ## Como acrescentar reclamações
 
